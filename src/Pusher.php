@@ -60,14 +60,15 @@ class Pusher implements LoggerAwareInterface, PusherInterface
      *
      * @throws PusherException Throws exception if any required dependencies are missing
      */
-    public function __construct(string $auth_key, string $secret, string $app_id, array $options = [], ClientInterface $client = null)
+    public function __construct(string $auth_key, string $secret, string $app_id, array $options = [], $client = null)
     {
         $this->check_compatibility();
 
         if (!is_null($client)) {
             $this->client = $client;
         } else {
-            $this->client = new \GuzzleHttp\Client();
+            //$this->client = new \GuzzleHttp\Client();
+            $this->client = new RequestsClient();
         }
 
         $useTLS = true;
