@@ -1,5 +1,5 @@
 {
-    "name": "pavlo-krostylov/pusher-http-php",
+    "name": "pavlo-krostylov/pusher-http-php", 
     "description" : "Library for interacting with the Pusher REST API",
     "keywords": ["php-pusher-server", "pusher", "rest", "realtime", "real-time", "real time", "messaging", "push", "trigger", "publish", "events"],
     "license": "MIT",
