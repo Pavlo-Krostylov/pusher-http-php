@@ -11,32 +11,52 @@ class RequestsClient
 
     public function __construct()
     {
-
     }
 
-
-    public function get(string $url, $headers = '', $content = '')
+    public function get($path, $options)
     {
+        $url = $options['base_uri'].'/'.$path;
+
         $opts = ['http' => ['method'  => 'GET']];
+        if(!empty($options['query'])) {
+            $url .= '?'.http_build_query($options['query']);
+        }
 
-        if(!empty($headers)) { $opts['http']['header'] = $headers; }
-        if($content != '' && $content != null) { $opts['http']['content'] = $content; }
+        if(!empty($options['headers'])) {
+            $opts['http']['header'] = "";
+            foreach ($options['headers'] as $key => $value) {
+                $opts['http']['header'] .= $key.": ".$value."\r\n";
+            }
+        }
+        if(isset($options['body']) && $options['body'] != '' && $options['body'] != null) { $opts['http']['content'] = $options['body']; }
 
         $context = stream_context_create($opts);
 
-        return file_get_contents($url, false, $context);
+        $result = file_get_contents($url, false, $context);
+        return $result;
     }
 
-    public function post(string $url, $headers = '', $content = '')
+    public function post($path, $options)
     {
-        $opts = ['http' => ['method'  => 'POST']];
+        $url = $options['base_uri'].'/'.$path;
 
-        if(!empty($headers)) { $opts['http']['header'] = $headers; }
-        if($content != '' && $content != null) { $opts['http']['content'] = $content; }
+        $opts = ['http' => ['method'  => 'POST']];
+        if(!empty($options['query'])) {
+            $url .= '?'.http_build_query($options['query']);
+        }
+
+        if(!empty($options['headers'])) {
+            $opts['http']['header'] = "";
+            foreach ($options['headers'] as $key => $value) {
+                $opts['http']['header'] .= $key.": ".$value."\r\n";
+            }
+        }
+        if(isset($options['body']) && $options['body'] != '' && $options['body'] != null) { $opts['http']['content'] = $options['body']; }
 
         $context = stream_context_create($opts);
 
-        return file_get_contents($url, false, $context);
+        $result = file_get_contents($url, false, $context);
+        return $result;
     }
 
     private function getClient() {

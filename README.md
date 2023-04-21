@@ -1,6 +1,6 @@
 # Pusher Channels HTTP PHP Library
 
-[![Tests](https://github.com/pusher/pusher-http-php/actions/workflows/test.yml/badge.svg)](https://github.com/pusher/pusher-http-php/actions/workflows/test.yml) [![Packagist Version](https://img.shields.io/packagist/v/pavlo-krostylov/pusher-http-php)](https://packagist.org/packages/pavlo-krostylov/pusher-http-php) [![Packagist License](https://img.shields.io/packagist/l/pavlo-krostylov/pusher-http-php)](https://packagist.org/packages/pavlo-krostylov/pusher-http-php) [![Packagist Downloads](https://img.shields.io/packagist/dm/pavlo-krostylov/pusher-http-php)](https://packagist.org/packages/pavlo-krostylov/pusher-http-php)
+[![Tests](https://github.com/pusher/pusher-http-php/actions/workflows/test.yml/badge.svg)](https://github.com/pusher/pusher-http-php/actions/workflows/test.yml) [![Packagist Version](https://img.shields.io/packagist/v/pusher/pusher-php-server)](https://packagist.org/packages/pavlo-krostylov/pusher-http-php) [![Packagist License](https://img.shields.io/packagist/l/pusher/pusher-php-server)](https://packagist.org/packages/pavlo-krostylov/pusher-http-php) [![Packagist Downloads](https://img.shields.io/packagist/dm/pusher/pusher-php-server)](https://packagist.org/packages/pavlo-krostylov/pusher-http-php)
 
 PHP library for interacting with the Pusher Channels HTTP API.
 
