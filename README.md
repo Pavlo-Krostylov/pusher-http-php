@@ -1,6 +1,6 @@
 # Pusher Channels HTTP PHP Library
 
-[![Tests](https://github.com/pusher/pusher-http-php/actions/workflows/test.yml/badge.svg)](https://github.com/pusher/pusher-http-php/actions/workflows/test.yml) [![Packagist Version](https://img.shields.io/packagist/v/pusher/pusher-php-server)](https://packagist.org/packages/pusher/pusher-php-server) [![Packagist License](https://img.shields.io/packagist/l/pusher/pusher-php-server)](https://packagist.org/packages/pusher/pusher-php-server) [![Packagist Downloads](https://img.shields.io/packagist/dm/pusher/pusher-php-server)](https://packagist.org/packages/pusher/pusher-php-server)
+[![Tests](https://github.com/pusher/pusher-http-php/actions/workflows/test.yml/badge.svg)](https://github.com/pusher/pusher-http-php/actions/workflows/test.yml) [![Packagist Version](https://img.shields.io/packagist/v/pavlo-krostylov/pusher-http-php)](https://packagist.org/packages/pavlo-krostylov/pusher-http-php) [![Packagist License](https://img.shields.io/packagist/l/pavlo-krostylov/pusher-http-php)](https://packagist.org/packages/pavlo-krostylov/pusher-http-php) [![Packagist Downloads](https://img.shields.io/packagist/dm/pavlo-krostylov/pusher-http-php)](https://packagist.org/packages/pavlo-krostylov/pusher-http-php)
 
 PHP library for interacting with the Pusher Channels HTTP API.
 
@@ -8,17 +8,17 @@ Register at <https://pusher.com> and use the application credentials within your
 
 ## Installation
 
-You can get the Pusher Channels PHP library via a composer package called `pusher-php-server`. See <https://packagist.org/packages/pusher/pusher-php-server>
+You can get the Pusher Channels PHP library via a composer package called `pusher-php-server`. See <https://packagist.org/packages/pavlo-krostylov/pusher-http-php>
 
 ```bash
-$ composer require pusher/pusher-php-server
+$ composer require pavlo-krostylov/pusher-http-php
 ```
 
 Or add to `composer.json`:
 
 ```json
 "require": {
-    "pusher/pusher-php-server": "^7.2"
+    "pavlo-krostylov/pusher-http-php": "^7.2"
 }
 ```
 
