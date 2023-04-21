@@ -8,6 +8,8 @@ class RequestsClient
      * @var null|resource
      */
     private $client = null; // Guzzle client
+    private $statusCode = null;
+    private $body = null;
 
     public function __construct()
     {
@@ -15,48 +17,74 @@ class RequestsClient
 
     public function get($path, $options)
     {
-        $url = $options['base_uri'].'/'.$path;
+        $this->body = null;
+        $this->statusCode = null;
+        $url = $options['base_uri'] . '/' . $path;
 
-        $opts = ['http' => ['method'  => 'GET']];
-        if(!empty($options['query'])) {
-            $url .= '?'.http_build_query($options['query']);
+        $opts = ['http' => ['method' => 'GET']];
+        if (!empty($options['query'])) {
+            $url .= '?' . http_build_query($options['query']);
         }
 
-        if(!empty($options['headers'])) {
+        if (!empty($options['headers'])) {
             $opts['http']['header'] = "";
             foreach ($options['headers'] as $key => $value) {
-                $opts['http']['header'] .= $key.": ".$value."\r\n";
+                $opts['http']['header'] .= $key . ": " . $value . "\r\n";
             }
         }
-        if(isset($options['body']) && $options['body'] != '' && $options['body'] != null) { $opts['http']['content'] = $options['body']; }
+        if (isset($options['body']) && $options['body'] != '' && $options['body'] != null) {
+            $opts['http']['content'] = $options['body'];
+        }
 
         $context = stream_context_create($opts);
 
-        $result = file_get_contents($url, false, $context);
-        return $result;
+        @$this->body = file_get_contents($url, false, $context);
+        if (!empty($http_response_header[0])) {
+            $status_line = $http_response_header[0];
+            preg_match('{HTTP\/\S*\s(\d{3})}', $status_line, $match);
+            $this->statusCode = $match[1];
+            if(is_numeric($this->statusCode)) {
+                $this->statusCode = intval($this->statusCode);
+            }
+        }
+
+        return $this;
     }
 
     public function post($path, $options)
     {
-        $url = $options['base_uri'].'/'.$path;
+        $this->body = null;
+        $this->statusCode = null;
+        $url = $options['base_uri'] . '/' . $path;
 
-        $opts = ['http' => ['method'  => 'POST']];
-        if(!empty($options['query'])) {
-            $url .= '?'.http_build_query($options['query']);
+        $opts = ['http' => ['method' => 'POST']];
+        if (!empty($options['query'])) {
+            $url .= '?' . http_build_query($options['query']);
         }
 
-        if(!empty($options['headers'])) {
+        if (!empty($options['headers'])) {
             $opts['http']['header'] = "";
             foreach ($options['headers'] as $key => $value) {
-                $opts['http']['header'] .= $key.": ".$value."\r\n";
+                $opts['http']['header'] .= $key . ": " . $value . "\r\n";
             }
         }
-        if(isset($options['body']) && $options['body'] != '' && $options['body'] != null) { $opts['http']['content'] = $options['body']; }
+        if (isset($options['body']) && $options['body'] != '' && $options['body'] != null) {
+            $opts['http']['content'] = $options['body'];
+        }
 
         $context = stream_context_create($opts);
 
-        $result = file_get_contents($url, false, $context);
-        return $result;
+        @$this->body = file_get_contents($url, false, $context);
+        if (!empty($http_response_header[0])) {
+            $status_line = $http_response_header[0];
+            preg_match('{HTTP\/\S*\s(\d{3})}', $status_line, $match);
+            $this->statusCode = $match[1];
+            if(is_numeric($this->statusCode)) {
+                $this->statusCode = intval($this->statusCode);
+            }
+        }
+
+        return $this;
     }
 
     private function getClient() {
@@ -69,5 +97,13 @@ class RequestsClient
     public function postAsync($path, $options)
     {
         return $this->getClient()->postAsync($path, $options);
+    }
+
+    public function getStatusCode() {
+        return $this->statusCode;
+    }
+
+    public function getBody() {
+        return $this->body;
     }
 }
