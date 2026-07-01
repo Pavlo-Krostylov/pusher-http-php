@@ -8,6 +8,26 @@ Register at <https://pusher.com> and use the application credentials within your
 
 For reporting issues, bugs, and feature requests, please feel free to open a pull request or open an issue. If you do not receive a timely response, feel free to check our [support portal](https://docs.bird.com/pusher).
 
+## About this fork: PHP streams instead of curl
+
+This is a performance-optimized fork of the official `pusher/pusher-php-server` package. The upstream library sends synchronous `trigger()`/`get()`/`post()` calls through Guzzle's default cURL handler. This fork replaces that sync path with PHP's built-in `stream_context_create()` / `file_get_contents()` HTTP client (see `src/RequestsClient.php`), which avoids Guzzle's PSR-7 request/response object construction and middleware stack for the common case. Asynchronous calls (`triggerAsync()` and friends) are unchanged and still go through Guzzle, since streams have no async/concurrency support.
+
+### Benchmark: streams vs. the original curl-based client
+
+Measured with 10 concurrent PHP worker processes hammering a real [Soketi](https://soketi.app/) server (an open-source, self-hosted Pusher-protocol server) for 60 seconds each, inside Docker containers on the same host, isolating the HTTP client itself as the only variable. CPU time is read directly from the container's cgroup accounting, not estimated. With 10 workers running for 60s, the maximum *possible* aggregate CPU time is 10 × 60s = 600 CPU-seconds (i.e. all 10 workers 100% CPU-busy the whole time) — both runs below are close to that ceiling, meaning the worker pool was almost fully CPU-saturated in both cases.
+
+| Client | Requests in 60s | Throughput | CPU per request | Aggregate CPU used (of 600 CPU-s possible) |
+|---|---|---|---|---|
+| Original (Guzzle + curl) | ~19,800 | ~330 req/s | ~29.4 ms | ~581 CPU-s (~97% utilization) |
+| This fork (PHP streams) | ~31,500 | ~526 req/s | ~18.3 ms | ~577 CPU-s (~96% utilization) |
+
+In other words: both configurations kept the worker pool almost fully CPU-busy, but this fork converted that same CPU budget into about **59% more completed requests**, because each individual call costs about **38% less CPU** — so more of the budget goes to useful request work instead of client-library overhead.
+
+A couple of honest caveats, since a synthetic benchmark against a static/no-op HTTP responder (rather than a real Pusher-protocol server) painted a *different*, much less favorable picture for streams — the result is sensitive to what's on the other end of the connection, so your mileage may vary against Pusher's actual production API:
+
+* This fork's sync client opens a fresh TCP connection per request (no keep-alive/connection pooling), unlike Guzzle's curl handles which can reuse connections. Under workloads that make many calls per second to the same host, that gap may narrow or reverse depending on network conditions.
+* Numbers above are from one machine/environment and are meant to show the general shape of the trade-off (lower CPU, generally higher throughput against a real server), not a guaranteed result for your infrastructure.
+
 ## Installation
 
 You can get the Pusher Channels PHP library via a composer package called `pusher-php-server`. See <https://packagist.org/packages/pavlo-krostylov/pusher-http-php>
