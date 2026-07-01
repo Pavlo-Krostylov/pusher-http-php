@@ -35,6 +35,9 @@ class RequestsClient
         if (isset($options['body']) && $options['body'] != '' && $options['body'] != null) {
             $opts['http']['content'] = $options['body'];
         }
+        if (!empty($options['timeout'])) {
+            $opts['http']['timeout'] = $options['timeout'];
+        }
 
         $context = stream_context_create($opts);
 
@@ -70,6 +73,9 @@ class RequestsClient
         }
         if (isset($options['body']) && $options['body'] != '' && $options['body'] != null) {
             $opts['http']['content'] = $options['body'];
+        }
+        if (!empty($options['timeout'])) {
+            $opts['http']['timeout'] = $options['timeout'];
         }
 
         $context = stream_context_create($opts);

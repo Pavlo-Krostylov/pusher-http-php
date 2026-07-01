@@ -6,6 +6,8 @@ PHP library for interacting with the Pusher Channels HTTP API.
 
 Register at <https://pusher.com> and use the application credentials within your app as shown below.
 
+For reporting issues, bugs, and feature requests, please feel free to open a pull request or open an issue. If you do not receive a timely response, feel free to check our [support portal](https://docs.bird.com/pusher).
+
 ## Installation
 
 You can get the Pusher Channels PHP library via a composer package called `pusher-php-server`. See <https://packagist.org/packages/pavlo-krostylov/pusher-http-php>
@@ -26,7 +28,7 @@ then run `composer update`.
 
 ## Supported platforms
 
-* PHP - supports PHP versions 7.3, 7.4, 8.0, and 8.1.
+* PHP - supports PHP versions 7.3, 7.4, 8.0, 8.1, 8.2, 8.3 and 8.4
 * Laravel - version 8.29 and above has built-in support for Pusher Channels as a [Broadcasting backend](https://laravel.com/docs/master/broadcasting).
 * Other PHP frameworks - supported provided you are using a supported version of PHP.
 
@@ -54,7 +56,7 @@ The fourth parameter is an `$options` array. The additional options are:
 * `timeout` - the HTTP timeout
 * `useTLS` - quick option to use scheme of https and port 443.
 * `cluster` - specify the cluster where the application is running from.
-* `encryption_master_key` - a 32 char long key. This key, along with the
+* `encryption_master_key_base64` - a 32 char long key. This key, along with the
   channel name, are used to derive per-channel encryption keys. Per-channel
   keys are used encrypt event data on encrypted channels.
 
@@ -514,7 +516,7 @@ Requires [phpunit](https://github.com/sebastianbergmann/phpunit).
 
 * Run `composer install`
 * Go to the `tests` directory
-* Rename `config.example.php` and replace the values with valid Channels
+* Rename `config.example.php` to `config.php` and replace the values with valid Channels
   credentials **or** create environment variables.
 * Some tests require a client to be connected to the app you defined in the
   config; you can do this by opening
