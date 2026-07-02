@@ -118,7 +118,7 @@ class Pusher implements LoggerAwareInterface, PusherInterface
         if (!is_null($client)) {
             $this->client = $client;
         } else {
-            $this->client = new RequestsClient();
+            $this->client = new RequestsClient($options['guzzle_options'] ?? []);
         }
     }
 

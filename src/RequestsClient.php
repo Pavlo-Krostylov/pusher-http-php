@@ -10,9 +10,11 @@ class RequestsClient
     private $client = null; // Guzzle client
     private $statusCode = null;
     private $body = null;
+    private array $guzzleOptions;
 
-    public function __construct()
+    public function __construct(array $guzzleOptions = [])
     {
+        $this->guzzleOptions = $guzzleOptions;
     }
 
     public function get($path, $options)
@@ -78,7 +80,7 @@ class RequestsClient
 
     private function getClient() {
         if (is_null($this->client)) {
-            $this->client = new \GuzzleHttp\Client();
+            $this->client = new \GuzzleHttp\Client($this->guzzleOptions);
         }
         return $this->client;
     }
